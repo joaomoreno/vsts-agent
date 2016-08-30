@@ -84,6 +84,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Tests.Util
                 List<string> validPackageNames = new List<string>()
                 {
                     "win7-x64",
+                    "debian.8-x64",
                     "ubuntu.14.04-x64",
                     "ubuntu.16.04-x64",
                     "centos.7-x64",
