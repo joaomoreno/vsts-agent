@@ -75,14 +75,14 @@ function rundotnet ()
         cfg_args="-c ${BUILD_CONFIG}"
         echo "${cfg_args}"
     fi
-    
+
     for dir_name in ${run_dirs[@]}
     do
         echo
         echo -- Running: dotnet $dotnet_cmd $dir_name --
         echo
         dotnet ${dotnet_cmd} $dir_name $cfg_args || ${err_handle} "${dotnet_cmd} $dir_name"
-    done   
+    done
 }
 
 function generateConstant()
@@ -95,7 +95,7 @@ function generateConstant()
     # after we get generate constants, we will overwrite the generated file
     cat "Misc/BuildConstants.ch" > "Microsoft.VisualStudio.Services.Agent/BuildConstants.cs"
     rundotnet publish failed build_dirs[0]
-    
+
     # get the runtime we are build for
     # if exist Agent.Listener/bin/${BUILD_CONFIG}/netcoreapp1.0
     build_folder="Microsoft.VisualStudio.Services.Agent/bin/${BUILD_CONFIG}/netcoreapp1.0"
@@ -110,7 +110,7 @@ function generateConstant()
 
     commit_token="_COMMIT_HASH_"
     package_token="_PACKAGE_NAME_"
-    commit_hash=`git rev-parse HEAD` || failed "git commit hash"
+    commit_hash=`git rev-parse HEAD` || commit_hash="0000000000000000000000000000000000000000" #failed "git commit hash"
     package_name=${runtime_folder%/}
     echo "Building ${commit_hash} --- ${package_name}"
 
@@ -120,11 +120,11 @@ function generateConstant()
 function build ()
 {
     generateConstant
-    
+
     if [[ "$define_os" == 'OS_WINDOWS' ]]; then
         reg_out=`reg query "HKLM\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0" -v MSBuildToolsPath`
         msbuild_location=`echo $reg_out | tr -d '\r\n' | tr -s ' ' | cut -d' ' -f5 | tr -d '\r\n'`
-              
+
         local rc=$?
         if [ $rc -ne 0 ]; then
             failed "Can not find msbuild location, failing build"
@@ -177,7 +177,7 @@ function copyBin ()
     fi
 
     cp -Rf ${source_dir}* ${LAYOUT_DIR}/bin
-    popd > /dev/null 
+    popd > /dev/null
 }
 
 function layout ()
@@ -186,7 +186,7 @@ function layout ()
     restore
     build
     publish
-    
+
     heading Layout ...
     rm -Rf ${LAYOUT_DIR}
     mkdir -p ${LAYOUT_DIR}/bin
@@ -200,10 +200,10 @@ function layout ()
         echo Copying Agent.Service
         cp -Rf $WINDOWSAGENTSERVICE_BIN/* ${LAYOUT_DIR}/bin
     fi
-    
+
     cp -Rf ./Misc/layoutroot/* ${LAYOUT_DIR}
     cp -Rf ./Misc/layoutbin/* ${LAYOUT_DIR}/bin
-    
+
     #change execution flag to allow running with sudo
     if [[ "$PLATFORM" == 'linux' ]]; then
         chmod +x ${LAYOUT_DIR}/bin/Agent.Listener
@@ -216,7 +216,7 @@ function layout ()
     else
         rm ${LAYOUT_DIR}/*.sh
     fi
-    
+
     heading Externals ...
     bash ./Misc/externals.sh || checkRC externals.sh
 }
@@ -321,7 +321,7 @@ case $DEV_CMD in
    "b") build;;
    "test") runtest;;
    "t") runtest;;
-   "bt") buildtest;;   
+   "bt") buildtest;;
    "clean") clean;;
    "c") clean;;
    "restore") restore;;
