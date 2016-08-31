@@ -110,7 +110,13 @@ function generateConstant()
 
     commit_token="_COMMIT_HASH_"
     package_token="_PACKAGE_NAME_"
-    commit_hash=`git rev-parse HEAD` || commit_hash="0000000000000000000000000000000000000000" #failed "git commit hash"
+
+    if [ -z "$SOURCE_COMMIT" ]; then
+        commit_hash=`git rev-parse HEAD` || failed "git commit hash"
+    else
+        commit_hash="$SOURCE_COMMIT"
+    fi
+
     package_name=${runtime_folder%/}
     echo "Building ${commit_hash} --- ${package_name}"
 
