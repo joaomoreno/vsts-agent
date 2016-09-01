@@ -1,4 +1,5 @@
 #!/bin/sh
+env
 echo "Image name: $IMAGE_NAME"
 echo "Source commit: $SOURCE_COMMIT"
 
