@@ -10,3 +10,6 @@ COPY src /var/vsts-agent/src
 
 RUN /var/vsts-agent/src/dev.sh layout
 RUN /var/vsts-agent/src/dev.sh test
+
+RUN mv /var/vsts-agent/_layout /var/agent
+RUN rm -rf /var/vsts-agent
