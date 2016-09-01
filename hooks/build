@@ -1,6 +1,2 @@
 #!/bin/sh
-env
-echo "Image name: $IMAGE_NAME"
-echo "Source commit: $SOURCE_COMMIT"
-
-docker build -t $IMAGE_NAME --build-arg SOURCE_COMMIT=$SOURCE_COMMIT .
+docker build -t $IMAGE_NAME --build-arg SOURCE_COMMIT=$GIT_SHA1 .
