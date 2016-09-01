@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "Image name: $IMAGE_NAME"
-echo "Image name: $SOURCE_COMMIT"
+echo "Source commit: $SOURCE_COMMIT"
 
 docker build -t $IMAGE_NAME --build-arg SOURCE_COMMIT=$SOURCE_COMMIT .
